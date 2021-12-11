@@ -15,7 +15,7 @@ terraform {
     organization = "diogoleal"
 
     workspaces {
-      name = "gh-actions-demo"
+      name = "crispy-succotash"
     }
   }
 }
