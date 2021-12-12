@@ -20,7 +20,7 @@ module "ec2_instance" {
 
   name                        = local.name_rancher
   ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t4g.medium"
+  instance_type               = "t3a.medium"
   availability_zone           = element(module.vpc.azs, 0)
   subnet_id                   = element(module.vpc.private_subnets, 0)
   vpc_security_group_ids      = [module.rancher_security_group.security_group_id]
