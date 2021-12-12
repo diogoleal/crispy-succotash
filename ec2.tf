@@ -21,12 +21,12 @@ module "ec2_instance" {
 
   name                        = local.name
   ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t3.small"
+  instance_type               = "t3a.small"
   availability_zone           = element(module.vpc.azs, 0)
   subnet_id                   = element(module.vpc.private_subnets, 0)
   vpc_security_group_ids      = [module.security_group.security_group_id]
-  placement_group             = aws_placement_group.web.id
-  associate_public_ip_address = true
+  # placement_group             = aws_placement_group.web.id
+  # associate_public_ip_address = true
   key_name                    = "comics"
 
   # only one of these can be enabled at a time
@@ -35,14 +35,14 @@ module "ec2_instance" {
 
   user_data_base64 = base64encode(local.user_data)
 
-  cpu_core_count       = 1 # default 4
-  cpu_threads_per_core = 1 # default 2
+  # cpu_core_count       = 1 # default 4
+  # cpu_threads_per_core = 1 # default 2
 
-  capacity_reservation_specification = {
-    capacity_reservation_preference = "open"
-  }
+  # capacity_reservation_specification = {
+  #   capacity_reservation_preference = "open"
+  # }
 
-  enable_volume_tags = false
+  # enable_volume_tags = false
   # root_block_device = [
   #   {
   #     encrypted   = true
