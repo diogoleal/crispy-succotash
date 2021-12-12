@@ -10,11 +10,12 @@ data "aws_ami" "amazon_linux" {
 
 
 locals {
-  name   = "example-ec2-complete"
+  name   = "k8s"
   region = "us-east-1"
 
   user_data = <<-EOT
   #!/bin/bash
+
   echo "Hello Terraform!"
   EOT
 

@@ -8,7 +8,7 @@ module "security_group" {
   vpc_id      = module.vpc.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["http-80-tcp", "all-icmp"]
+  ingress_rules       = ["all-all"]
   egress_rules        = ["all-all"]
 
   tags = local.tags
@@ -19,9 +19,7 @@ module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
 
-  name = "k8s"
-
-
+  name = local.name
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t3.small"
   availability_zone           = element(module.vpc.azs, 0)
@@ -29,6 +27,7 @@ module "ec2_instance" {
   vpc_security_group_ids      = [module.security_group.security_group_id]
   placement_group             = aws_placement_group.web.id
   associate_public_ip_address = true
+  key_name = "comics"
 
   # only one of these can be enabled at a time
   hibernation = true
@@ -44,28 +43,28 @@ module "ec2_instance" {
   }
 
   enable_volume_tags = false
-  root_block_device = [
-    {
-      encrypted   = true
-      volume_type = "gp3"
-      throughput  = 200
-      volume_size = 50
-      tags = {
-        Name = "my-root-block"
-      }
-    },
-  ]
+  # root_block_device = [
+  #   {
+  #     encrypted   = true
+  #     volume_type = "gp3"
+  #     throughput  = 200
+  #     volume_size = 50
+  #     tags = {
+  #       Name = "my-root-block"
+  #     }
+  #   },
+  # ]
 
-  ebs_block_device = [
-    {
-      device_name = "/dev/sdf"
-      volume_type = "gp3"
-      volume_size = 5
-      throughput  = 200
-      encrypted   = true
-      kms_key_id  = aws_kms_key.this.arn
-    }
-  ]
+  # ebs_block_device = [
+  #   {
+  #     device_name = "/dev/sdf"
+  #     volume_type = "gp3"
+  #     volume_size = 5
+  #     throughput  = 200
+  #     encrypted   = true
+  #     kms_key_id  = aws_kms_key.this.arn
+  #   }
+  # ]
 
   tags = local.tags
 }
