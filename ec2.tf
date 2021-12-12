@@ -3,7 +3,7 @@ module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4.0"
 
-  name        = "sg-k8s"
+  name        = "k8s"
   description = "Security Group k8s"
   vpc_id      = module.vpc.vpc_id
 
