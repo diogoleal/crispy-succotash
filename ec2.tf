@@ -19,7 +19,7 @@ module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
 
-  name = local.name
+  name                        = local.name
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t3.small"
   availability_zone           = element(module.vpc.azs, 0)
@@ -27,7 +27,7 @@ module "ec2_instance" {
   vpc_security_group_ids      = [module.security_group.security_group_id]
   placement_group             = aws_placement_group.web.id
   associate_public_ip_address = true
-  key_name = "comics"
+  key_name                    = "comics"
 
   # only one of these can be enabled at a time
   hibernation = true
