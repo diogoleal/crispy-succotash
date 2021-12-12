@@ -8,7 +8,6 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
-
 locals {
   name         = "k8s"
   name_rancher = "rancher"
@@ -16,8 +15,9 @@ locals {
 
   user_data = <<-EOT
   #!/bin/bash
-
-  echo "Hello Terraform!"
+  yum install docker -y
+  /etc/init.d/docker start
+  docker run -d --name rancher --restart=unless-stopped -v /opt/rancher:/var/lib/rancher  -p 80:80 -p 443:443 rancher/rancher:v2.4.3
   EOT
 
   tags = {
@@ -27,8 +27,8 @@ locals {
   }
 }
 
-resource "aws_kms_key" "this" {
-}
+resource "aws_kms_key" "this" {}
+
 resource "aws_network_interface" "this" {
   subnet_id = element(module.vpc.private_subnets, 0)
 }
