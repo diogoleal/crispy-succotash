@@ -30,7 +30,7 @@ module "ec2_instance" {
   key_name = "comics"
 
   # only one of these can be enabled at a time
-  hibernation = true
+  # hibernation = true
   # enclave_options_enabled = true
 
   user_data_base64 = base64encode(local.user_data)
