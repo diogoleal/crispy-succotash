@@ -35,7 +35,7 @@ module "ec2_instance" {
 
   user_data_base64 = base64encode(local.user_data)
 
-  cpu_core_count       = 2 # default 4
+  cpu_core_count       = 1 # default 4
   cpu_threads_per_core = 1 # default 2
 
   capacity_reservation_specification = {
