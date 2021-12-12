@@ -22,7 +22,7 @@ module "ec2_instance" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t3a.medium"
   availability_zone           = element(module.vpc.azs, 0)
-  subnet_id                   = element(module.vpc.private_subnets, 0)
+  subnet_id                   = element(module.vpc.public_subnets, 0)
   vpc_security_group_ids      = [module.rancher_security_group.security_group_id]
   key_name                    = "comics"
   user_data_base64            = base64encode(local.user_data)
