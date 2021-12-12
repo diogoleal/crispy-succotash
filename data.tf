@@ -10,8 +10,9 @@ data "aws_ami" "amazon_linux" {
 
 
 locals {
-  name   = "k8s"
-  region = "us-east-1"
+  name         = "k8s"
+  name_rancher = "rancher"
+  region       = "us-east-1"
 
   user_data = <<-EOT
   #!/bin/bash
