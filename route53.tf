@@ -1,34 +1,31 @@
-
-
 locals {
   zone_name = sort(keys(module.zones.route53_zone_zone_id))[0]
-  #  zone_id = module.zones.route53_zone_zone_id["app.terraform-aws-modules-example.com"]
+  #  zone_id = module.zones.route53_zone_zone_id["app.comics.internal"]
 }
-
 
 module "zones" {
   source  = "terraform-aws-modules/route53/aws//modules/zones"
   version = "~> 2.0"
 
   zones = {
-    "terraform-aws-modules-example.com" = {
-      comment = "terraform-aws-modules-example.com (production)"
+    "comics.internal" = {
+      comment = "comics.internal (production)"
       tags = {
-        Name = "terraform-aws-modules-example.com"
+        Name = "comics.internal"
       }
     }
 
-    "app.terraform-aws-modules-example.com" = {
-      comment = "app.terraform-aws-modules-example.com"
+    "app.comics.internal" = {
+      comment = "app.comics.internal"
       tags = {
-        Name = "app.terraform-aws-modules-example.com"
+        Name = "app.comics.internal"
       }
     }
 
-    "private-vpc.terraform-aws-modules-example.com" = {
+    "private-vpc.comics.internal" = {
       # in case than private and public zones with the same domain name
-      domain_name = "terraform-aws-modules-example.com"
-      comment     = "private-vpc.terraform-aws-modules-example.com"
+      domain_name = "comics.internal"
+      comment     = "private-vpc.comics.internal"
       vpc = [
         {
           vpc_id = module.vpc.vpc_id
