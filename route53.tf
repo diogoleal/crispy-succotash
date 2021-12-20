@@ -32,9 +32,6 @@ module "zones" {
         },
       ]
       tags = local.tags
-      # tags = {
-      #   Name = "private-vpc.terraform-aws-modules-example.com"
-      # }
     }
   }
 
@@ -54,33 +51,34 @@ module "records" {
       type = "A"
       ttl  = 3600
       records = [
-        "10.10.10.10",
+        "1.1.1.1",
       ]
     },
+
+   
+
     {
       name           = "test"
       type           = "CNAME"
       ttl            = 5
-      records        = ["test.example.com."]
+      records        = [module.rancher_instance.private_dns[0]]
       set_identifier = "test-primary"
       weighted_routing_policy = {
         weight = 90
       }
-    },
-    {
-      name           = "test"
-      type           = "CNAME"
-      ttl            = 5
-      records        = ["test2.example.com."]
-      set_identifier = "test-secondary"
-      weighted_routing_policy = {
-        weight = 10
-      }
     }
+    # {
+    #   name           = "test"
+    #   type           = "CNAME"
+    #   ttl            = 5
+    #   records        = ["test2.example.com."]
+    #   set_identifier = "test-secondary"
+    #   weighted_routing_policy = {
+    #     weight = 10
+    #   }
+    # }
   ]
 
   depends_on = [module.zones]
 }
-
-
 
