@@ -19,7 +19,7 @@ module "rancher_instance" {
   version = "~> 3.0"
 
   name                        = local.name_rancher
-  ami                         = data.aws_ami.amazon_linux.id
+  ami                         = "ami-0d70a7bf361d3f60a"
   instance_type               = "t3a.medium"
   availability_zone           = element(module.vpc.azs, 0)
   subnet_id                   = element(module.vpc.public_subnets, 0)
@@ -28,4 +28,21 @@ module "rancher_instance" {
   user_data_base64            = base64encode(local.user_data)
   associate_public_ip_address = true
   tags                        = local.tags
+}
+
+resource "aws_volume_attachment" "isto" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.isto.id
+  instance_id = module.rancher_instance.id
+}
+
+resource "aws_ebs_volume" "isto" {
+  availability_zone = element(module.vpc.azs, 0)
+  size              = 20
+  tags              = local.tags
+}
+
+resource "aws_eip" "rancher" {
+  instance = module.rancher_instance.id
+  vpc      = true
 }

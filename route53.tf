@@ -11,7 +11,7 @@ module "zones" {
     "comics.internal" = {
       comment = "comics.internal (production)"
       tags = {
-        Name = "comics.internal"
+        Name = var.dns_name
       }
     }
 
