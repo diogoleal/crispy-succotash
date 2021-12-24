@@ -19,14 +19,28 @@ module "k8s_instance" {
   version = "~> 3.0"
 
   name                        = local.name_k8s
-  ami                         = data.aws_ami.amazon_linux.id
-  count                       = 3
-  instance_type               = "t3a.medium"
+  ami                         = "ami-02c9ebf50ae56530e"
+  count                       = var.k8s_count
+  instance_type               = var.instance_type_k8s
   availability_zone           = element(module.vpc.azs, 0)
   subnet_id                   = element(module.vpc.public_subnets, 0)
   vpc_security_group_ids      = [module.k8s_security_group.security_group_id]
-  key_name                    = "comics"
+  key_name                    = var.key_name
   user_data_base64            = base64encode(local.user_data)
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   tags                        = local.tags
+}
+
+resource "aws_volume_attachment" "this" {
+  count       = var.k8s_count
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.this[count.index].id
+  instance_id = module.k8s_instance[count.index].id
+}
+
+resource "aws_ebs_volume" "this" {
+  availability_zone = element(module.vpc.azs, 0)
+  count             = var.k8s_count
+  size              = 20
+  tags              = local.tags
 }
